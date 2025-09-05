@@ -10,7 +10,8 @@ describe('App', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(/login page/i)).toBeInTheDocument();
+    const heading = screen.getByRole('heading', { name: /Войти/i });
+    expect(heading).toBeInTheDocument();
   });
 
   it('renders Login page', () => {
@@ -19,7 +20,8 @@ describe('App', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(/login page/i)).toBeInTheDocument();
+    const heading = screen.getByRole('heading', { name: /Войти/i });
+    expect(heading).toBeInTheDocument();
   });
 
   it('renders NotFound page for invalid route', () => {
