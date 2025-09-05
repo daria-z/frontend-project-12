@@ -21,7 +21,7 @@
     "start:server": "cd server && npm run dev",
     "dev": "concurrently \"npm run start:frontend\" \"npm run start:server\"",
     "install:all": "npm ci && cd frontend && npm ci && cd ../server && npm ci",
-    "render:all": "install:all build"
+    "render:all": "npm run install:all && npm run build"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
