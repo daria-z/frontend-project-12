@@ -16,8 +16,5 @@
   "main": "src/index.js",
   "scripts": {
     "test": "test"
-  },
-  "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
   }
 }
