@@ -1,0 +1,23 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/daria-z/frontend-project-12#readme",
+  "bugs": {
+    "url": "https://github.com/daria-z/frontend-project-12/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daria-z/frontend-project-12.git"
+  },
+  "license": "ISC",
+  "author": "Daria Zakirova",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
