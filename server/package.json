@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "npx start-server",
+    "dev": "npx start-server",
+    "start": "npx start-server -s ../frontend/dist"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4"
