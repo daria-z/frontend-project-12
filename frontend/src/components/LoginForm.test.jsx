@@ -1,34 +1,42 @@
-import { render, screen } from '@testing-library/react';
-import LoginForm from './LoginForm.jsx';
+import { MemoryRouter } from 'react-router-dom';
+import { describe } from "vitest";
+import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
+import LoginForm from './LoginForm';
+
+// test('responds with the user', async () => {
+//   const response = await fetch('https://api.example.com/user')
+
+//   await expect(response.json()).resolves.toEqual({
+//     id: 'abc-123',
+//     firstName: 'John',
+//     lastName: 'Maverick',
+//   })
+// })
 
 describe('LoginForm', () => {
-  it('рендерит поле ввода для имени', () => {
-    render(<LoginForm />);
-    const nameInput = screen.getByPlaceholderText('Ваш ник');
-    expect(nameInput).toBeInTheDocument();
+
+  it('sends login request to local server and receives token', async () => {
+    render(<MemoryRouter><LoginForm /></MemoryRouter>);
+
+    await userEvent.type(screen.getByPlaceholderText(/ваш ник/i), 'admin');
+    await userEvent.type(screen.getByPlaceholderText(/пароль/i), 'admin');
+    await userEvent.click(screen.getByRole('button', { name: /войти/i }));
+
+    await waitFor(() => {
+      expect(localStorage.getItem('token')).toBe('admin_token');
+    });
   });
 
-  it('рендерит поле ввода для пароля', () => {
-    render(<LoginForm />);
-    const emailInput = screen.getByPlaceholderText('Пароль');
-    expect(emailInput).toBeInTheDocument();
-  });
+  it('handles login error from local server', async () => {
+    render(<MemoryRouter><LoginForm /></MemoryRouter>);
 
-  it('рендерит кнопку отправки формы', () => {
-    render(<LoginForm />);
-    const submitButton = screen.getByRole('button', { name: /войти/i });
-    expect(submitButton).toBeInTheDocument();
-  });
+    await userEvent.type(screen.getByPlaceholderText(/ваш ник/i), 'wrong');
+    await userEvent.type(screen.getByPlaceholderText(/пароль/i), 'wrong123');
+    await userEvent.click(screen.getByRole('button', { name: /войти/i }));
 
-  it('рендерит метку для поля имени', () => {
-    render(<LoginForm />);
-    const nameLabel = screen.getByLabelText('Ваш ник');
-    expect(nameLabel).toBeInTheDocument();
-  });
-
-  it('рендерит метку для поля email', () => {
-    render(<LoginForm />);
-    const emailLabel = screen.getByLabelText('Пароль');
-    expect(emailLabel).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Unauthorized/i)).toBeInTheDocument();
+    });
   });
 });

@@ -8,6 +8,7 @@ export default defineConfig({
     port: "5002",
     proxy: {
       "/api": {
+        target: "http://localhost:5001",
         changeOrigin: true,
         secure: false,
         configure: (proxy, options) => {
@@ -44,5 +45,6 @@ export default defineConfig({
     },
   },
 });
+
 
 
