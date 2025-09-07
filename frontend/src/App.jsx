@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import Chat from './pages/Chat.jsx';
 import Login from './pages/Login.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { Provider } from 'react-redux'
@@ -8,7 +9,7 @@ function App() {
   return (
     <Provider store={store}>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Chat />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
