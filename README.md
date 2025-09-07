@@ -64,3 +64,5 @@ root/
    ```bash
    npm run start
    ```
+
+Vitest `http://localhost:51204/__vitest__/#/`

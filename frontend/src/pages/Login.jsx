@@ -1,4 +1,4 @@
-import LoginForm from '../components/LoginForm.jsx'
+import LoginForm from '../features/auth/components/LoginForm'
 function Login() {
   return (
     <div>
