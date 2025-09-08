@@ -1,19 +1,28 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+
+
+import Header from './components/Header/Header.jsx';
 import Chat from './pages/Chat.jsx';
 import Login from './pages/Login.jsx';
 import NotFound from './pages/NotFound.jsx';
-import { Provider } from 'react-redux'
-import { store } from './app/store.js';
+
 
 function App() {
+  const isAuthenticated = useSelector((state) => !!state.auth.token)
+
   return (
-    <Provider store={store}>
-      <Routes>
+    <BrowserRouter>
+      <>
+        <Header isAuthenticated={isAuthenticated} />
+        <Routes>
         <Route path="/" element={<Chat />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Provider>
+      </>
+
+    </BrowserRouter>
   )
 }
 
