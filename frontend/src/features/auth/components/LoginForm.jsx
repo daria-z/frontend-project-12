@@ -1,14 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-import { useLoginMutation } from '../authApi'
-import { setLogin, setError } from '../authSlice'
+import { useLoginMutation } from '../authApi';
+
+const LoginSchema = Yup.object().shape({
+  username: Yup.string().required('Обязательное поле'),
+  password: Yup.string().required('Обязательное поле'),
+})
 
 function LoginForm() {
-  const [ login ] = useLoginMutation();
-  const dispatch = useDispatch();
-  const error = useSelector((state) => state.auth.error);
+  const [ loginMutation, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
 
   return (
@@ -17,30 +19,32 @@ function LoginForm() {
         username: '',
         password: '',
       }}
-      onSubmit={async (values) => {
-        console.log('onSubmit')
-        try {
-          const response = await login(values).unwrap();
-          dispatch(setLogin({ username: response.username, token: response.token }));
-          localStorage.setItem('token', response.token);
-          console.log('в localStorage: ', localStorage.getItem('token'));
-          navigate('/');
-        } catch {
-          dispatch(setError('Unauthorized'));
-          // TODO: нужна нормальная обработка ошибок. 401 и проблем с сетью
-        }
+      validationSchema={LoginSchema}
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        loginMutation(values).unwrap()
+          .then((response) => {
+            localStorage.setItem('token', response.token);
+            resetForm();
+            navigate('/');
+          })
+          // Ошибка обрабатывается в authSlice через extraReducers
+          .finally(() => setSubmitting(false))
       }}
     >
-      <Form>
-        <label htmlFor="username">Ваш ник</label>
-        <Field id="username" name="username" placeholder="Ваш ник" />
+      {({ isSubmitting }) => (
+        <Form>
+          <label htmlFor="username">Ваш ник</label>
+          <Field id="username" name="username" placeholder="Ваш ник" />
+          <ErrorMessage name='username' component='div' style={{ color: 'red' }} />
 
-        <label htmlFor="password">Пароль</label>
-        <Field id="password" name="password" type="password" placeholder="Пароль" />
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <button type="submit">Войти</button>
+          <label htmlFor="password">Пароль</label>
+          <Field id="password" name="password" type="password" placeholder="Пароль" />
+          <ErrorMessage name='password' component='div' style={{ color: 'red' }} />
+          <button type="submit" disabled={isSubmitting || isLoading}>
+            {isSubmitting || isLoading ? 'Загрузка...' : 'Войти'}
+          </button>
         <div></div>
-      </Form>
+      </Form>)}
     </Formik>
   )
 }
