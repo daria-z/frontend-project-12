@@ -1,14 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "../features/auth/authApi";
 import authReducer from '../features/auth/authSlice';
+import { channelsApi } from "../features/channels/channelsApi";
+import channelReducer from "../features/channels/channelsSlice";
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer, // Добавляем редьюсер RTK Query
+    [channelsApi.reducerPath]: channelsApi.reducer,
     auth: authReducer, // auth: { isLoggedIn, username, email, token, error }
+    channels: channelReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware), // Добавляем middleware RTK Query
+    getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(channelsApi.middleware), // Добавляем middleware RTK Query
 });
 
 export default store;
@@ -35,4 +41,6 @@ export default store;
 //     error: null
 //   }
 // }
+
+
 
