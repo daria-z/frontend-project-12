@@ -5,21 +5,21 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5002" }),
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
-
-    // If we have a token set in state, let's assume that we should be passing it.
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
 
     return headers;
   },
+  tagTypes: ["Channels", "Messages"],
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (value) => ({
+      query: (credentials) => ({
         url: "/api/v1/login",
         method: "POST",
-        body: value, // { username: 'admin', password: 'admin' } => { token: ..., username: 'admin' }
+        body: credentials, // { username: 'admin', password: 'admin' } => { token: ..., username: 'admin' }
       }),
+      invalidatesTags: ["Channels", "Messages"],
     }),
     register: builder.mutation({
       query: (userData) => ({
@@ -27,6 +27,7 @@ export const authApi = createApi({
         method: "POST",
         body: userData, // { username: 'newuser', password: '123456' } => { token: ..., username: 'newuser' }
       }),
+      invalidatesTags: ["Channels", "Messages"],
     }),
   }),
 });

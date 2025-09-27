@@ -7,46 +7,49 @@ export const channelsApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+  tagTypes: ["Channels"],
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => ({
         url: "/api/v1/channels",
         method: "GET",
       }),
+      providesTags: ["Channels"],
     }),
-    addChannels: builder.mutation({
+    addChannel: builder.mutation({
       query: (newChannel) => ({
         url: "/api/v1/channels",
         method: "POST",
         body: newChannel, // { name: 'new channel' }
       }),
+      invalidatesTags: ["Channels"],
     }),
-    editChannels: builder.mutation({
+    editChannel: builder.mutation({
       query: (id, editedChannel) => ({
         url: `/api/v1/channels/${id}`,
         method: "PATCH",
         body: editedChannel, // { name: 'new name channel' }
       }),
+      invalidatesTags: ["Channels"],
     }),
-    removeChannels: builder.mutation({
+    removeChannel: builder.mutation({
       query: (id) => ({
         url: `/api/v1/channels/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Channels"],
     }),
   }),
 });
 
 export const {
   useGetChannelsQuery,
-  useAddChannelsMutation,
-  useEditChannelsMutation,
-  useRemoveChannelsMutation,
+  useAddChannelMutation,
+  useEditChannelMutation,
+  useRemoveChannelMutation,
 } = channelsApi;
-
-
