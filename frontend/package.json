@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:server": "npx start-server",
+    "start:server": "npx start-server -s ./dist",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest --ui",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\""
   },
   "dependencies": {
+    "@hexlet/chat-server": "^1.1.6",
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
@@ -31,6 +35,7 @@
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/ui": "^3.2.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
