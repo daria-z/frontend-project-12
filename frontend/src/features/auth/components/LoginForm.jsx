@@ -21,14 +21,19 @@ function LoginForm() {
       }}
       validationSchema={LoginSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        loginMutation(values).unwrap()
+        loginMutation(values)
+          .unwrap()
           .then((response) => {
-            localStorage.setItem('token', response.token);
-            resetForm();
-            navigate('/');
+            const token = response.token;
+            if (token) {
+              localStorage.setItem('token', token);
+              navigate('/channels', { replace: true });
+              resetForm();
+            }
           })
-          // Ошибка обрабатывается в authSlice через extraReducers
-          .finally(() => setSubmitting(false))
+          .finally(() => {
+            setSubmitting(false);
+          });
       }}
     >
       {({ isSubmitting }) => (
