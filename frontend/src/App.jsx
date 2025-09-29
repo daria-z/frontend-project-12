@@ -1,5 +1,4 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 
 import Header from './components/Header/Header.jsx';
@@ -9,19 +8,21 @@ import NotFound from './pages/NotFound.jsx';
 
 
 function App() {
-  const isAuthenticated = useSelector((state) => !!state.auth.token)
+  const token = localStorage.getItem('token')
 
   return (
     <BrowserRouter>
-      <>
-        <Header isAuthenticated={isAuthenticated} />
-        <Routes>
-        <Route path="/" element={<Chat />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<NotFound />} />
+      <Routes>
+        <Route
+          path="/login"
+          element={token ? <Navigate to="/channels" replace /> : <Login />}
+        />
+        <Route
+          path="/channels"
+          element={token ? <Chat /> : <Navigate to="/login" replace />}
+        />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-      </>
-
     </BrowserRouter>
   )
 }
