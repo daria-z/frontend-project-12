@@ -12,9 +12,9 @@ https://frontend-project-12-xioh.onrender.com
 
 ```
 root/
-├── frontend/      # Фронтенд на основе Vite
-├── server/        # Бэкенд на основе @hexlet/chat-server
-└── package.json   # Корневой package.json с общими скриптами
+├── frontend/      # Фронтенд на основе Vite, включает сервер (@hexlet/chat-server)
+│   ├── src/       # Исходный код фронтенда
+│   └── dist/      # Статические файлы после сборки
 ```
 
 Корневой `package.json` содержит скрипты для управления фронтендом и бэкендом. Ниже описаны все доступные скрипты и их назначение.
@@ -26,12 +26,10 @@ root/
 
 | Скрипт              | Команда                          | Описание                                                                 |
 |---------------------|----------------------------------|--------------------------------------------------------------------------|
-| `install:all`       | `npm run install:all`           | Устанавливает зависимости для корня, `frontend` и `server` |
+| `install:all`       | `npm run install:all`           | Устанавливает зависимости для `frontend`|
 | `build`             | `npm run build`                 | Собирает фронтенд в `frontend/dist`. |
-| `start`             | `npm run start`                 | Запускает бэкенд (`@hexlet/chat-server`) в продакшен-режиме, обслуживая фронтенд из `frontend/dist`. |
-| `start:frontend`    | `npm run start:frontend`        | Запускает сервер разработки Vite для фронтенда (выполняется в `frontend`). |
-| `start:server`      | `npm run start:server`          | Запускает бэкенд в режиме разработки (выполняется в `server`). |
-| `dev`               | `npm run dev`                   | Запускает серверы фронтенда и бэкенда параллельно с помощью `concurrently`. |
+| `start`             | `npm run start`                 | Запускает сервер (@hexlet/chat-server) в продакшен-режиме, обслуживая фронтенд из frontend/dist. |
+| `dev`               | `npm run dev`                   | Запускает сервер разработки Vite и сервер чата одновременно. |
 | `render:all`        | `npm run render:all`            | Подготавливает проект к деплою: устанавливает зависимости (`install:all`) и собирает фронтенд (`build`). |
 
 ## Примеры использования

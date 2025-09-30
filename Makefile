@@ -4,12 +4,18 @@ install:
 dev:
 	npm run dev
 
-frontend:
-	npm run start:frontend
+build:
+	rm -rf frontend/dist
+	npm run build
 
 start:
 	npm run start
 
-build:
-	rm -rf frontend/dist
-	npm run build
+test:
+	npm run test
+
+test-watch:
+	npm run test:watch
+
+render:
+	npm run render:all

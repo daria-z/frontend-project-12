@@ -1,12 +1,17 @@
-# React + Vite
+# Фронтенд и сервер чат-приложения
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Эта папка содержит фронтенд (на основе Vite и React) и сервер (на основе `@hexlet/chat-server`) для учебного приложения-чата.
 
-Currently, two official plugins are available:
+## Технологии
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Фронтенд**:
+  - Vite — инструмент для сборки и разработки
+  - React — библиотека для создания UI
+  - React Router — маршрутизация
+  - RTK Query — управление запросами к API
+  - Axios — HTTP-запросы
+  - Formik и Yup — управление формами и валидация
+  - React Bootstrap — компоненты UI
+- **Сервер**: @hexlet/chat-server
+- **Тестирование**: Vitest, MSW
+- **Линтер**: ESLint с плагинами для React и Vitest
