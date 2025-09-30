@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { useLoginMutation } from '../authApi';
+import { setError } from '../authSlice';
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required('Обязательное поле'),
@@ -12,6 +16,16 @@ const LoginSchema = Yup.object().shape({
 function LoginForm() {
   const [ loginMutation, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const loginError = useSelector((state) => state.auth.loginError);
+
+  useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/channels', { replace: true });
+      }
+  },[])
 
   return (
     <Formik
@@ -20,16 +34,20 @@ function LoginForm() {
         password: '',
       }}
       validationSchema={LoginSchema}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
+      onSubmit={(values, { setSubmitting, resetForm, setFieldError }) => {
+        dispatch(setError(null));
         loginMutation(values)
           .unwrap()
-          .then((response) => {
-            const token = response.token;
-            if (token) {
-              localStorage.setItem('token', token);
-              navigate('/channels', { replace: true });
-              resetForm();
+          .then(() => {
+            resetForm();
+          })
+          .catch((error) => {
+            const errorMessage = error?.data?.error || 'Ошибка авторизации';
+            if (error.status === 401) {
+              setFieldError('username', 'Неверный логин или пароль');
+              setFieldError('password', 'Неверный логин или пароль');
             }
+            dispatch(setError(errorMessage));
           })
           .finally(() => {
             setSubmitting(false);
@@ -45,6 +63,9 @@ function LoginForm() {
           <label htmlFor="password">Пароль</label>
           <Field id="password" name="password" type="password" placeholder="Пароль" />
           <ErrorMessage name='password' component='div' style={{ color: 'red' }} />
+
+          {loginError && <div className="error server-error">{loginError}</div>}
+
           <button type="submit" disabled={isSubmitting || isLoading}>
             {isSubmitting || isLoading ? 'Загрузка...' : 'Войти'}
           </button>

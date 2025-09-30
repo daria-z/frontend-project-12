@@ -3,43 +3,46 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const channelsApi = createApi({
   reducerPath: "channelsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5002",
+    baseUrl: "/api/v1",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
+      console.log("Channels API token:", token);
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set("authorization", `Bearer ${token}`);
       }
+      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
   tagTypes: ["Channels"],
   endpoints: (builder) => ({
     getChannels: builder.query({
-      query: () => ({
-        url: "/api/v1/channels",
+      query: (channelsList) => ({
+        url: "/channels",
         method: "GET",
+        body: channelsList,
       }),
       providesTags: ["Channels"],
     }),
     addChannel: builder.mutation({
       query: (newChannel) => ({
-        url: "/api/v1/channels",
+        url: "/channels",
         method: "POST",
         body: newChannel, // { name: 'new channel' }
       }),
       invalidatesTags: ["Channels"],
     }),
     editChannel: builder.mutation({
-      query: (id, editedChannel) => ({
-        url: `/api/v1/channels/${id}`,
+      query: ({ id, ...editedChannel }) => ({
+        url: `/channels/${id}`,
         method: "PATCH",
-        body: editedChannel, // { name: 'new name channel' }
+        body: editedChannel,
       }),
       invalidatesTags: ["Channels"],
     }),
     removeChannel: builder.mutation({
       query: (id) => ({
-        url: `/api/v1/channels/${id}`,
+        url: `/channels/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Channels"],

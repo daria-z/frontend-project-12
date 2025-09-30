@@ -2,20 +2,19 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5002" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1" }),
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
-
     return headers;
   },
   tagTypes: ["Channels", "Messages"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        url: "/api/v1/login",
+        url: "/login",
         method: "POST",
         body: credentials, // { username: 'admin', password: 'admin' } => { token: ..., username: 'admin' }
       }),
@@ -23,7 +22,7 @@ export const authApi = createApi({
     }),
     register: builder.mutation({
       query: (userData) => ({
-        url: "/api/v1/signup",
+        url: "/signup",
         method: "POST",
         body: userData, // { username: 'newuser', password: '123456' } => { token: ..., username: 'newuser' }
       }),
@@ -37,4 +36,7 @@ export const { useLoginMutation, useRegisterMutation } = authApi;
 // const [login, { isLoading, error }] = useLoginMutation();
 // await login({ username: 'admin', password: 'admin' }).unwrap(); // Отправляет POST на /api/v1/login
 // .unwrap() извлекает данные из ответа или выбрасывает ошибку, если запрос не удался.
+
+
+
 
