@@ -1,29 +1,39 @@
 import { Toast, ToastContainer, Button } from 'react-bootstrap';
+import { useState } from 'react';
 
-const ChannelActionsToast = ({ show, onClose, onRename, onDelete }) => {
+import ModalComponent from '../components/Modals/ModalComponent';
+
+const ChannelActionsToast = ({ channel, show, onClose }) => {
+  const [modalType, setModalType] = useState(null);
+
+  const handleOpenModal = (type) => {
+    setModalType(type);
+  };
+
   return (
     <ToastContainer position="top-end" className="p-3">
       <Toast show={show} onClose={onClose}>
-        <Toast.Header>
-          <strong className="me-auto">Действия с каналом</strong>
-        </Toast.Header>
         <Toast.Body>
-          <div className="d-flex flex-column gap-2">
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={onRename}
-            >
-              Переименовать
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={onDelete}
-            >
-              Удалить
-            </Button>
-          </div>
+          <button
+            className="btn btn-link"
+            onClick={() => handleOpenModal('renameChannel', channel)}
+          >
+            Переименовать
+          </button>
+
+
+          <button
+            className="btn btn-link"
+            onClick={() => handleOpenModal('deleteChannel', channel)}
+          >
+            Удалить
+          </button>
+        <ModalComponent
+          type={modalType}
+          isOpen={!!modalType}
+          channel={channel}
+          onClose={() => setModalType(null)}
+        />
         </Toast.Body>
       </Toast>
     </ToastContainer>

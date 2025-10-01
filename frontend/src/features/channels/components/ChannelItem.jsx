@@ -1,14 +1,28 @@
 import { useState } from 'react';
-import RenameChannelModal from "./Modals/RenameChannelModal"
-
+import { Button } from 'react-bootstrap';
+import ChannelActionsToast from '../components/ChannelActionsToast';
 
 const ChannelItem = ({ channel }) => {
-  const [isRenameOpen, setIsRenameOpen] = useState(false);
+
+  const [showToast, setShowToast] = useState(false);
+
+
+
   return (
     <li>
-      <span>{channel.name}</span>
-      <button onClick={() => setIsRenameOpen(true)}>Переименовать</button>
-      <RenameChannelModal channel={channel} isOpen={isRenameOpen} onClose={() => setIsRenameOpen(false)} />
+      <div key={channel.id} className="mb-2">
+        <span>{channel.name}</span>
+        {channel.removable &&
+          <>
+          <Button onClick={() => setShowToast(true)}>toast button</Button>
+          <ChannelActionsToast
+            channel={channel}
+            show={showToast}
+            onClose={() => setShowToast(false)}
+          />
+          </>
+        }
+      </div>
     </li>
   );
 };
