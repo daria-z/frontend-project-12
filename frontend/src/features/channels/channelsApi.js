@@ -16,10 +16,9 @@ export const channelsApi = createApi({
   tagTypes: ["Channels"],
   endpoints: (builder) => ({
     getChannels: builder.query({
-      query: (channelsList) => ({
+      query: () => ({
         url: "/channels",
         method: "GET",
-        body: channelsList,
       }),
       providesTags: ["Channels"],
     }),

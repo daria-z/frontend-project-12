@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const messagesApi = createApi({
   reducerPath: "messagesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5002/api/v1",
+    baseUrl: "/api/v1",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if (token) {
@@ -25,15 +25,15 @@ export const messagesApi = createApi({
       query: (newMessage) => ({
         url: "/messages",
         method: "POST",
-        body: newMessage,
+        body: newMessage, // { body, channelId, username }
       }),
       invalidatesTags: ["Messages"],
     }),
     editMessage: builder.mutation({
-      query: ({ id, ...editedMessage }) => ({
+      query: ({ id, body }) => ({
         url: `/messages/${id}`,
         method: "PATCH",
-        body: editedMessage,
+        body: { body },
       }),
       invalidatesTags: ["Messages"],
     }),
@@ -48,8 +48,8 @@ export const messagesApi = createApi({
 });
 
 export const {
-  useGetМessagesQuery,
-  useAddМessageMutation,
-  useEditМessageMutation,
-  useRemoveМessageMutation,
+  useGetMessagesQuery,
+  useAddMessageMutation,
+  useEditMessageMutation,
+  useRemoveMessageMutation,
 } = messagesApi;
