@@ -14,7 +14,7 @@
   "author": "Daria Zakirova",
   "type": "module",
   "main": "src/index.js",
-"scripts": {
+  "scripts": {
     "install:all": "cd frontend && npm ci",
     "dev": "cd frontend && npm run dev:all",
     "start": "cd frontend && npm run start:server",
